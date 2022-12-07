@@ -186,7 +186,10 @@ Now, start creating some plots yourself. Again, we want to display the years on 
 aiddata_yearly %>% 
   ggplot(mapping = aes(x = commitment_year, 
                        y = amount_total)) +
-    geom_col()
+  labs(x = "commitment year", y = "total amount",title = "Amount of development finances committed to by the Chinese government") +
+    geom_col() +
+    theme_minimal()
+
 
 # Scatterplot
 
