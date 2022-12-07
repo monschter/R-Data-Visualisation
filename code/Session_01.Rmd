@@ -183,12 +183,26 @@ Now, start creating some plots yourself. Again, we want to display the years on 
 
 ```{r}
 # Bar plot
-
+aiddata_yearly %>% 
+  ggplot(mapping = aes(x = commitment_year, 
+                       y = amount_total)) +
+    geom_col()
 
 # Scatterplot
 
+aiddata_yearly %>% 
+  ggplot(mapping = aes(x = commitment_year, 
+                       y = amount_total)) +
+    geom_point() 
 
 # Line plot
+
+aiddata_yearly %>% 
+  ggplot(mapping = aes(x = commitment_year, 
+                       y = amount_total)) +
+    geom_point() +
+  geom_line() +
+  geom_smooth(se = FALSE)
 
 ```
 
@@ -238,7 +252,7 @@ aiddata_red %>%
              y = amount,
              fill = region)) + 
   geom_col() + 
-  facet_wrap(~ intent, 
+  facet_wrap(~ status, 
              scale = "free")
 ```
 
