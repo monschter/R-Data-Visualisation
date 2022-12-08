@@ -6,7 +6,20 @@ output: html_document
 The [R plugin](https://www.jetbrains.com/help/pycharm/r-plugin-support.html) for IntelliJ-based IDEs provides
 handy capabilities to work with the [R Markdown](https://www.jetbrains.com/help/pycharm/r-markdown.html) files.
 To [add](https://www.jetbrains.com/help/pycharm/r-markdown.html#add-code-chunk) a new R chunk,
+```{r}
+run <- read_csv("runner.txt")
 
+
+```
+
+
+```{r}
+run %>%
+  ggplot(mapping = aes(x = "athlete's nationality",
+                       y = time)) +
+  geom_col() +
+  theme_minimal()
+```
 ```{r}
 df <- swiss[c("Examination", "Education", "Infant.Mortality")]
 #create a new dataframe. First column is "Examination", second "Education", last "Infant.Mortality".
@@ -16,9 +29,7 @@ df <- df[c(1, 2, 3, 10, 11, 12, 13),]
 ```{r}
 # Bar plot
 df %>%
-  ggplot(mapping = aes(x = commitment_year,
-                       y = amount_total)) +
-  labs(x = "commitment year", y = "total amount", title = "Amount of development finances committed to by the Chinese government") +
+  ggplot(mapping = aes(y = "Infant.Mortality")) +
   geom_col() +
   theme_minimal()
 
