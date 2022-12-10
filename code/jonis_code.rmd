@@ -6,10 +6,40 @@ output: html_document
 The [R plugin](https://www.jetbrains.com/help/pycharm/r-plugin-support.html) for IntelliJ-based IDEs provides
 handy capabilities to work with the [R Markdown](https://www.jetbrains.com/help/pycharm/r-markdown.html) files.
 To [add](https://www.jetbrains.com/help/pycharm/r-markdown.html#add-code-chunk) a new R chunk,
+
+```{r}
+pacman::p_load(tidyverse, readxl, lubridate, RColorBrewer, ggthemes)
+data <- read_csv("data.txt")
+
+```
+
+```{r}
+# Transform the values in the date-column into a date format
+#data$date <- as.Date( data$date, format = "%d.%m.%Y")
+
+library(lubridate)
+data$date <- parse_date_time(data$date, c("dmy"))
+data$month <- parse_date_time(data$month, c("my"))
+# Using functions provided by the `lubridate` -package, we transform the values in the month-columns into a date format:
+
+data$weekday <- weekdays(data$date)
+
+data$amount <- 1
+
+#Using the `weekdays` -function we can add a column "weekday" that contains the day of the week corresponding to the date:
+```
+
+```{r}
+data %>%
+  ggplot(mapping = aes(x = month,
+                       y = amount,
+                        fill = weekday)) +
+  labs(x = "month", y = "total amount") +
+  geom_col() +
+  theme_classic()
+```
 ```{r}
 run <- read_csv("runner.txt")
-
-
 ```
 
 
