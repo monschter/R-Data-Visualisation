@@ -38,6 +38,47 @@ data %>%
   geom_col() +
   theme_classic()
 ```
+
+
+```{r}
+#plot the amount of events per moth:
+ggplot(data, aes(x=month, y=amount,fill=weekday)) +
+  geom_bar(stat='identity') +
+  xlab('Month') +
+  ylab('Number of Events') +
+  ggtitle('Number of Events Per Month')
+```
+```{r}
+data %>%
+  ggplot(mapping = aes(x = weekday,
+                       y = amount,
+                       fill = month)) +
+  labs(x = "weekady", y = "total amount") +
+  geom_col() +
+  theme_classic()
+
+
+library(ggplot2)
+
+ggplot(data, aes(x = weekday, y = amount, fill = month)) +
+  geom_bar(stat = "identity") +
+    theme(axis.text.x = element_text(size = 8),
+          axis.text.y = element_text(size = 8))  +
+  scale_x_discrete(limits = c("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag")) +
+  geom_hline(aes(yintercept = median(amount)), color = "red")
+
+
+# library(ggplot2)
+#
+# ggplot(data, aes(x=weekday, y=amount, fill=month)) +
+#   geom_boxplot() +
+#  # geom_text(aes(label = round(median(amount),2)), hjust = 0.5, vjust = -0.5, size = 8) +
+#   scale_x_discrete(limits = c("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag")) +
+#   theme(axis.text.x = element_text(size = 8),
+#         axis.text.y = element_text(size = 8))
+```
+
+
 ```{r}
 run <- read_csv("runner.txt")
 ```
