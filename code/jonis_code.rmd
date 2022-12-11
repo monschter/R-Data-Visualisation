@@ -48,6 +48,17 @@ ggplot(data, aes(x=month, y=amount,fill=weekday)) +
   ylab('Number of Events') +
   ggtitle('Number of Events Per Month')
 ```
+(Language R)
+given the following data frame called "data":
+each line represents an amount.
+The Column "date" contains the date of the month in a date format.
+The Column "month" contains the month if the event in a date format.
+The Column "weekday" contains the weekday of the event as a String.
+weekday = {"Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag","Sonntag"}
+
+plot the amount of events per weekday, fill = month. make sure that the x-achis is sorted.
+add the median value of the amount to the plot. increase the text size on the x and y axis:
+
 ```{r}
 data %>%
   ggplot(mapping = aes(x = weekday,
