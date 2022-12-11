@@ -9,8 +9,20 @@ To [add](https://www.jetbrains.com/help/pycharm/r-markdown.html#add-code-chunk) 
 
 ```{r}
 pacman::p_load(tidyverse, readxl, lubridate, RColorBrewer, ggthemes)
-data <- read_csv("data.txt")
+#data <- read_csv("data.txt")
+# runner <- read_csv("distanceWalkingRunning4.csv")
+# runner <- read.csv("distanceWalkingRunning4.csv", header = TRUE)
 
+#runner <- fread("sed 's/\\0//g' distanceWalkingRunning4.csv")
+
+# runner <- read.csv("distanceWalkingRunning4.csv", stringsAsFactors = FALSE)
+# runner <- read.csv(file = "distanceWalkingRunning4.csv", sep = ";", header = TRUE)
+# library(readr)
+# runner <- read_csv(file = "distanceWalkingRunning4.csv", sep = ";", na.strings = "NULL", header = TRUE)
+# runner <- read.table("DistanceWalkingRunning2.txt",
+#                      header = FALSE,
+#                      stringsAsFactors = FALSE,
+#                      col.names = c("WorkoutStatistics", "startDate", "endDate", "sum", "unit"))
 ```
 
 ```{r}
@@ -93,6 +105,19 @@ ggplot(data, aes(x = weekday, y = amount, fill = month)) +
 ```{r}
 run <- read_csv("runner.txt")
 ```
+
+
+
+```{r}
+distanceWalkingRunning4 %>%
+ggplot(mapping = aes(x = startDate,
+                     y = sum,
+                     fill = type)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic()
+```
+
 
 
 ```{r}
