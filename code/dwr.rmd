@@ -13,16 +13,34 @@ pacman::p_load(tidyverse, readxl, lubridate, RColorBrewer, ggthemes, unikn)
 # dwr <- read_csv(sep = ";", header = TRUE,"DistanceWalkingRunning2")
 workout <- read.csv("workout.csv", sep=";")
 dwr <- read.csv("dwr.csv", sep=";")
-```
+goal <- read.csv("dwrGoal.csv", sep=";",header = TRUE)
+library(xml2)
 
+# pg <- read_xml("Export.xml")
+
+```
+```{r}
+# library(XML)
+#
+# # LOADING TRANSFORMED XML INTO R DATA FRAME
+# doc<-xmlParse("Export.xml")
+# xmldf <- xmlToDataFrame(nodes = getNodeSet(doc, "//record"))
+# View(xmldf)
+# xmldf <- xmlToDataFrame(nodes = getNodeSet(doc, "//record"))
+# View(xmldf)
+```
 ```{r}
 
 library(lubridate)
 
 workout$start <- as.Date(workout$start, format="%Y-%m-%d %H:%M:%S %z")
 dwr$start <- as.Date(dwr$start, format="%Y-%m-%d %H:%M:%S %z")
+goal$start <- as.Date(goal$date, format="%Y-%m-%d")
+
 workout$weekday <- weekdays(workout$start)
 dwr$weekday <- weekdays(dwr$start)
+goal$weekday <- weekdays(goal$start)
+
 
 ```
 
@@ -56,7 +74,10 @@ dwr %>%
                        fill = unit)) +
   labs(x = "day", y = "distance") +
   geom_col() +
+  # guides(color = unikn.guide()) +
   theme_classic() +
+  ggtitle('Running distance per day') +
+  # scale_fill_discrete(name="title",labels = c("A","B","C","D"))
   facet_wrap(~type,
              scale = "free")
 dwr %>%
@@ -66,30 +87,53 @@ dwr %>%
   labs(x = "day", y = "distance") +
   geom_col() +
   theme_classic() +
+  ggtitle('Running distance per day') +
   facet_wrap(~type,
              scale = "free")
 
 dwr %>%
   ggplot(mapping = aes(x = start,
-                       y = value,
-                       fill = type)) +
+                       y = value)) +
   labs(x = "day", y = "distance") +
   geom_col() +
   theme_classic() +
-  facet_wrap(~weekday,
-             scale = "free")
+  ggtitle('Running distance per day, split by weekday') +
+  facet_wrap(~weekday)
+
+# dwr %>%
+#   ggplot(mapping = aes(x = start,
+#                        y = value,
+#                        fill = type)) +
+#   labs(x = "day", y = "distance") +
+#   geom_col() +
+#   theme_classic() +
+#   facet_wrap(~unit,
+#              scale = "free")
 
 dwr %>%
-  ggplot(mapping = aes(x = start,
+  ggplot(mapping = aes(x = weekday,
                        y = value,
-                       fill = type)) +
+                       fill = start)) +
   labs(x = "day", y = "distance") +
+  scale_x_discrete(limits = c("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag")) +
   geom_col() +
-  theme_classic() +
-  facet_wrap(~unit,
-             scale = "free")
+  ggtitle('Running distance for each weekday') +
+  theme_classic()
 ```
 
+
+```{r}
+goal %>%
+  ggplot(mapping = aes(x = start,
+                       y = activeEnergyBurned,
+                       fill = activeEnergyBurnedGoal)) +
+  labs(x = "day", y = "active energy burned") +
+  geom_col() +
+  theme_classic() +
+  ylim(0, 400)
+  # acet_wrap(~weekday,
+  #            scale = "free")
+```
 
 Now, click the **Run** button on the chunk toolbar to [execute](https://www.jetbrains.com/help/pycharm/r-markdown.html#run-r-code) the chunk code. The result should be placed under the chunk.
 Click the **Knit and Open Document** to build and preview an output.
