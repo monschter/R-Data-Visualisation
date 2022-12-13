@@ -8,18 +8,19 @@ handy capabilities to work with the [R Markdown](https://www.jetbrains.com/help/
 To [add](https://www.jetbrains.com/help/pycharm/r-markdown.html#add-code-chunk) a new R chunk,
 
 ```{r}
-pacman::p_load(tidyverse, readxl, lubridate, RColorBrewer, ggthemes)
-#data <- read_csv("data.txt")
-# runner <- read_csv("distanceWalkingRunning4.csv")
-# runner <- read.csv("distanceWalkingRunning4.csv", header = TRUE)
+pacman::p_load(tidyverse, readxl, lubridate, RColorBrewer, ggthemes, unikn)
+data <- read_csv("data.txt")
+runner <- read_csv("../workout.csv")
+# runner <- read_csv("dwr.csv")
+# runner <- read.csv("dwr.csv", header = TRUE)
 
-#runner <- fread("sed 's/\\0//g' distanceWalkingRunning4.csv")
+#runner <- fread("sed 's/\\0//g' dwr.csv")
 
-# runner <- read.csv("distanceWalkingRunning4.csv", stringsAsFactors = FALSE)
-# runner <- read.csv(file = "distanceWalkingRunning4.csv", sep = ";", header = TRUE)
+# runner <- read.csv("dwr.csv", stringsAsFactors = FALSE)
+# runner <- read.csv(file = "dwr.csv", sep = ";", header = TRUE)
 # library(readr)
-# runner <- read_csv(file = "distanceWalkingRunning4.csv", sep = ";", na.strings = "NULL", header = TRUE)
-# runner <- read.table("DistanceWalkingRunning2.txt",
+# runner <- read_csv(file = "dwr.csv", sep = ";", na.strings = "NULL", header = TRUE)
+# runner <- read.table("workout.csv",
 #                      header = FALSE,
 #                      stringsAsFactors = FALSE,
 #                      col.names = c("WorkoutStatistics", "startDate", "endDate", "sum", "unit"))
@@ -106,16 +107,60 @@ ggplot(data, aes(x = weekday, y = amount, fill = month)) +
 run <- read_csv("runner.txt")
 ```
 
+read distance 2
+```{r}
+# dwr <- read_csv(sep = ";", header = TRUE,"DistanceWalkingRunning2")
+dwr <- read.csv("../workout.csv", sep=";")
+distanceWalkingRunning4 <- read.csv("../dwr.csv", sep=";")
+library(lubridate)
+
+dwr$start <- as.Date(dwr$start, format="%Y-%m-%d %H:%M:%S %z")
+distanceWalkingRunning4$startDate <- as.Date(distanceWalkingRunning4$startDate, format="%Y-%m-%d %H:%M:%S %z")
+```
+
+```{r}
+dwr %>%
+ggplot(mapping = aes(x = start,
+                     y = value,
+                     fill = unit)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~type,
+             scale = "free")
+
+dwr %>%
+  ggplot(mapping = aes(x = start,
+                       y = value,
+                       fill = type)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~unit,
+             scale = "free")
+```
 
 
 ```{r}
 distanceWalkingRunning4 %>%
-ggplot(mapping = aes(x = startDate,
-                     y = sum,
-                     fill = type)) +
+  ggplot(mapping = aes(x = startDate,
+                       y = sum,
+                       fill = unit)) +
   labs(x = "day", y = "distance") +
   geom_col() +
-  theme_classic()
+  theme_classic() +
+  facet_wrap(~type,
+             scale = "free")
+
+distanceWalkingRunning4 %>%
+  ggplot(mapping = aes(x = startDate,
+                       y = sum,
+                       fill = type)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~unit,
+             scale = "free")
 ```
 
 

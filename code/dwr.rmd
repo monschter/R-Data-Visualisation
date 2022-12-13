@@ -1,0 +1,95 @@
+---
+title: "Jonis running data"
+output: html_document
+---
+
+The [R plugin](https://www.jetbrains.com/help/pycharm/r-plugin-support.html) for IntelliJ-based IDEs provides
+handy capabilities to work with the [R Markdown](https://www.jetbrains.com/help/pycharm/r-markdown.html) files.
+To [add](https://www.jetbrains.com/help/pycharm/r-markdown.html#add-code-chunk) a new R chunk,
+
+```{r}
+pacman::p_load(tidyverse, readxl, lubridate, RColorBrewer, ggthemes, unikn)
+
+# dwr <- read_csv(sep = ";", header = TRUE,"DistanceWalkingRunning2")
+workout <- read.csv("workout.csv", sep=";")
+dwr <- read.csv("dwr.csv", sep=";")
+```
+
+```{r}
+
+library(lubridate)
+
+workout$start <- as.Date(workout$start, format="%Y-%m-%d %H:%M:%S %z")
+dwr$start <- as.Date(dwr$start, format="%Y-%m-%d %H:%M:%S %z")
+workout$weekday <- weekdays(workout$start)
+dwr$weekday <- weekdays(dwr$start)
+
+```
+
+```{r}
+workout %>%
+ggplot(mapping = aes(x = start,
+                     y = value,
+                     fill = unit)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~type,
+             scale = "free")
+
+workout %>%
+  ggplot(mapping = aes(x = start,
+                       y = value,
+                       fill = type)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~unit,
+             scale = "free")
+```
+
+
+```{r}
+dwr %>%
+  ggplot(mapping = aes(x = start,
+                       y = value,
+                       fill = unit)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~type,
+             scale = "free")
+dwr %>%
+  ggplot(mapping = aes(x = start,
+                       y = value,
+                       fill = weekday)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~type,
+             scale = "free")
+
+dwr %>%
+  ggplot(mapping = aes(x = start,
+                       y = value,
+                       fill = type)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~weekday,
+             scale = "free")
+
+dwr %>%
+  ggplot(mapping = aes(x = start,
+                       y = value,
+                       fill = type)) +
+  labs(x = "day", y = "distance") +
+  geom_col() +
+  theme_classic() +
+  facet_wrap(~unit,
+             scale = "free")
+```
+
+
+Now, click the **Run** button on the chunk toolbar to [execute](https://www.jetbrains.com/help/pycharm/r-markdown.html#run-r-code) the chunk code. The result should be placed under the chunk.
+Click the **Knit and Open Document** to build and preview an output.
