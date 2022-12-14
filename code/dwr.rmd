@@ -137,3 +137,13 @@ goal %>%
 
 Now, click the **Run** button on the chunk toolbar to [execute](https://www.jetbrains.com/help/pycharm/r-markdown.html#run-r-code) the chunk code. The result should be placed under the chunk.
 Click the **Knit and Open Document** to build and preview an output.
+
+```{r}
+dwr %>%
+  ggplot(mapping = aes(x = start,
+                       y = value)) +
+  labs(x = "day", y = "distance") +
+  # theme_classic() +
+  ggtitle('Running distance per day') +
+  geom_col(color="red",fill= "blue")
+```
