@@ -123,7 +123,7 @@ head(all_road_colors)
 Plot the lines data, apply a different color to each factor level. Then add the coordinates of the capitals. When adding the legend, x="right" specifies the location of the legend. cex is the font size. After "fill=" we name the color palette we used to fill our objects with.
 ```{r}
 plot(st_geometry(better), col= all_road_colors)
-plot(st_geometry(capital), pch=16, col = "red", add=T)
+plot(st_geometry(capital), pch=16, col = "red", add=T)#add T adds the two plots together
 legend(x = "right", c("  6 visits", "10 visits", "13 visits", "19 visits" ), cex = .5, fill = road_palette)
 ```
 
