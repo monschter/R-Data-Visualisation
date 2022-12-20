@@ -53,7 +53,7 @@ ggplot(mapping = aes(x = start,
   geom_col() +
   theme_classic() +
   facet_wrap(~type,
-             scale = "free")
+             scale = "free_y")
 
 workout %>%
   ggplot(mapping = aes(x = start,

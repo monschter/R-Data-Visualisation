@@ -10,20 +10,8 @@ To [add](https://www.jetbrains.com/help/pycharm/r-markdown.html#add-code-chunk) 
 ```{r}
 pacman::p_load(tidyverse, readxl, lubridate, RColorBrewer, ggthemes, unikn)
 data <- read_csv("data.txt")
-runner <- read_csv("../workout.csv")
-# runner <- read_csv("dwr.csv")
-# runner <- read.csv("dwr.csv", header = TRUE)
+# runner <- read_csv("../workout.csv")
 
-#runner <- fread("sed 's/\\0//g' dwr.csv")
-
-# runner <- read.csv("dwr.csv", stringsAsFactors = FALSE)
-# runner <- read.csv(file = "dwr.csv", sep = ";", header = TRUE)
-# library(readr)
-# runner <- read_csv(file = "dwr.csv", sep = ";", na.strings = "NULL", header = TRUE)
-# runner <- read.table("workout.csv",
-#                      header = FALSE,
-#                      stringsAsFactors = FALSE,
-#                      col.names = c("WorkoutStatistics", "startDate", "endDate", "sum", "unit"))
 ```
 
 ```{r}
