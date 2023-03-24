@@ -9,8 +9,12 @@ To [add](https://www.jetbrains.com/help/pycharm/r-markdown.html#add-code-chunk) 
 
 ```{r}
 pacman::p_load(tidyverse, readxl, lubridate, RColorBrewer, ggthemes, unikn)
-data <- read_csv("data.txt")
+# data <- read_csv("data.txt")
 # runner <- read_csv("../workout.csv")
+library(readr)
+#data <- read_csv("../data.csv")
+data <- read_csv("../dataLong.csv")
+View(dataLong)
 
 ```
 
@@ -21,6 +25,8 @@ data <- read_csv("data.txt")
 library(lubridate)
 data$date <- parse_date_time(data$date, c("dmy"))
 data$month <- parse_date_time(data$month, c("my"))
+#data$time <- parse_date_time(data$time, c("HMS"))
+
 # Using functions provided by the `lubridate` -package, we transform the values in the month-columns into a date format:
 
 data$weekday <- weekdays(data$date)
@@ -29,6 +35,46 @@ data$amount <- 1
 
 #Using the `weekdays` -function we can add a column "weekday" that contains the day of the week corresponding to the date:
 ```
+
+
+
+```{r}
+# Convert the date column to a proper date format
+#data$date <- as.Date(data$date)
+
+# Create a sequence of dates for the last 12 months
+last_12_months <- seq(Sys.Date(), by = "-1 month", length.out = 12)
+
+# Create a data frame with a column for each month and initialize to zero
+months <- data.frame(matrix(0, nrow = 1, ncol = length(last_12_months)))
+colnames(months) <- format(last_12_months, "%b %Y")
+
+# Loop over the rows in data and update the corresponding month in months
+for (i in 1:nrow(data)) {
+  month_name <- format(data$date[i], "%b %Y")
+  if (month_name %in% colnames(months)) {
+    months[1, month_name] <- months[1, month_name] + 1
+  }
+}
+
+
+```
+
+```{r}
+library(ggplot2)
+
+# Convert the months data frame to long format
+months_long <- tidyr::gather(months, month, days, factor_key = TRUE)
+
+# Create a bar chart
+ggplot(months_long, aes(x = month, y = days, fill = month)) +
+  geom_bar(stat = "identity") +
+  scale_fill_discrete(name = "Month", labels = format(last_12_months, "%b %Y")) +
+  xlab("Month") +
+  ylab("Number of days")
+```
+
+
 
 ```{r}
 data %>%
@@ -105,7 +151,7 @@ library(hrbrthemes)
 # )
 
 # Most basic bubble plot
-p <- ggplot(data, aes(x=weekday, y=amount)) +
+p <- ggplot(months_long, aes(x=month, y=days)) +
   geom_line( color="#69b3a2") +
   xlab("") +
   theme_ipsum() +
@@ -129,18 +175,29 @@ dataa <- data.frame(
 )
 
 # Most basic bubble plot
-p <- ggplot(data, aes(x=mont, y=amount)) +
-  geom_line( color="steelblue") +
+#p <- ggplot(dataa, aes(x = day, y = value)) +
+p <- ggplot(months_long, aes(x = months, y = days)) +
+  geom_line( color="blue") +
   geom_point() +
   xlab("") +
   theme_ipsum() +
   theme(axis.text.x=element_text(angle=60, hjust=1)) +
-  # scale_x_date(limit=c(as.Date("2017-01-01"),as.Date("2017-02-11"))) +
+  #scale_x_date(limit=c(as.Date("2022-04-01"),as.Date("2023-03-01"))) +
   ylim(0,1.5)
 
 p
 ```
 
+```{r}
+# Create a bubble plot
+ggplot(months_long, aes(x = month, y = 1, size = days, fill = month)) +
+  geom_point(shape = 21) +
+  scale_size(range = c(5, 15)) +
+  scale_fill_discrete(name = "Month", labels = format(last_12_months, "%b %Y")) +
+  xlab("Month") +
+  ylab("") +
+  guides(size = FALSE)
+```
 
 
 
